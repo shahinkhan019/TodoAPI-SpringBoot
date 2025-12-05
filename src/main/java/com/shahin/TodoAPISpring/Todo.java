@@ -7,14 +7,15 @@ public class Todo{
 	private int userId;
 
 	public Todo(int id, boolean completed, String title, int userId) {
-
-	}
-
-	public void setId(int id, boolean completed, String title, int userId){
 		this.id = id;
 		this.completed = completed;
 		this.title = title;
 		this.userId = userId;
+
+	}
+
+	public void setId(int id){
+		this.id = id;
 	}
 
 	public int getId(){
