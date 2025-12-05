@@ -19,6 +19,10 @@ public class TodoController {
         todoList.add(new Todo(2, true, "Todo 2", 2));
     }
 
+//    @GetMapping("/todoList") tells Spring: "Route HTTP GET requests for the path /todoList to this method."
+    @GetMapping("/todoList")             //It maps GET /todoList to getTodos().
+    public List<Todo> getTodos() {       // This method handles GET requests to /todoList
+        return todoList;               // It returns the list of Todo items
 
     @GetMapping("/todoList")
     public List<Todo> getTodos() {
