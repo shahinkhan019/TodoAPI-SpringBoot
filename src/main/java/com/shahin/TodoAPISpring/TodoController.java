@@ -13,9 +13,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RestController
 @RequestMapping("/api/v1/todos")
 public class TodoController {
+    private String errMsg;
 
     private static List<Todo> todos = new ArrayList<>();
     private static final AtomicInteger idCounter = new AtomicInteger(2);
+
+    private static String error(String errMsg) {
+        return "Not found";
+    }
 
     public TodoController() {
         todos.add(new Todo(1, false, "Todo 1", 1));
@@ -44,13 +49,14 @@ public class TodoController {
     }
 
     @GetMapping("/{todoId}")
-    public ResponseEntity<Todo> getTodoById(@PathVariable Long todoId) { // here we are using @PathVariable annotation to extract the todoId from the URL path
+    public ResponseEntity<?> getTodoById(@PathVariable Long todoId) { // here we are using @PathVariable annotation to extract the todoId from the URL path
         for (Todo todo : todos) {
             if (todo.getId() == todoId) {
                 return ResponseEntity.ok(todo);
             }
         }
-        return ResponseEntity.notFound().build(); // build method is used to create the ResponseEntity with 404 status code
+//        return ResponseEntity.notFound().build(); // build method is used to create the ResponseEntity with 404 status code
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Resource not found"); // for custom error message
     }
 
 
