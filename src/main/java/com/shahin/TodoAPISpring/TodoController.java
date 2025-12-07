@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
+@RequestMapping("/api/v1/todos")
 public class TodoController {
 
     private static List<Todo> todos = new ArrayList<>();
@@ -22,14 +23,14 @@ public class TodoController {
     }
 
 
-    @GetMapping("/todos")
+    @GetMapping("/")
     public ResponseEntity<List<Todo>> getTodos() {
-        return ResponseEntity.status(HttpStatus.OK).body(todos); // here ok is returning status ex 200ok to 201 or more
+        return ResponseEntity.status(HttpStatus.OK).body(todos); // returning the list of todos with HTTP status 200 OK
 
     }
 
 
-    @PostMapping("/todos")
+    @PostMapping("/")
 //    @ResponseStatus(HttpStatus.CREATED) we can you RequestEntity<> at the place of this
 
     public ResponseEntity<Todo> createTodos(@RequestBody Todo newTodo) {
@@ -40,6 +41,16 @@ public class TodoController {
         todos.add(newTodo);
         return ResponseEntity.status(HttpStatus.CREATED).body(newTodo);
 
+    }
+
+    @GetMapping("/{todoId}")
+    public ResponseEntity<Todo> getTodoById(@PathVariable Long todoId) { // here we are using @PathVariable annotation to extract the todoId from the URL path
+        for (Todo todo : todos) {
+            if (todo.getId() == todoId) {
+                return ResponseEntity.ok(todo);
+            }
+        }
+        return ResponseEntity.notFound().build(); // build method is used to create the ResponseEntity with 404 status code
     }
 
 
